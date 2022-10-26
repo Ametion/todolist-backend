@@ -3,6 +3,8 @@ import cors from 'cors';
 import {myDataSource} from "./Database/dataSource";
 import {loginRouter} from "./Routes/AccountRoutes/LoginRoute";
 import {registerRouter} from "./Routes/AccountRoutes/RegisterRoute";
+import {getTodoRouter} from "./Routes/Todos/GetUserTodoRoute";
+import {todoRouter} from "./Routes/Todos/TodoRoute";
 require("dotenv").config()
 const app = express()
 
@@ -22,6 +24,8 @@ app.listen(process.env.SERVER_PORT, () => {
 
         app.use(loginRouter)
         app.use(registerRouter)
+        app.use(getTodoRouter)
+        app.use(todoRouter)
     }).catch((err) => {
         console.log(err)
     })

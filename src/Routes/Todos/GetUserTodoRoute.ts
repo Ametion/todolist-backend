@@ -1,19 +1,19 @@
 import express from "express";
 import {ActionResultModel} from "../../Model/ActionResultModel";
-import {AccountService} from "../../Services/AccountService/AccountService";
+import {TodosService} from "../../Services/TodosService/TodosService";
 
 const router = express.Router();
 
-router.post("/login", async (req, res) => {
+router.get("/todo", async (req, res) => {
     try{
-        const {login, password} = req.body
+        const {login, token} = req.body
 
-        if(!login || !password){
+        if(!login || !token){
             res.send(new ActionResultModel("204", "dont have enough body parameters for login account"))
             return
         }
 
-        res.send(await new AccountService().Login(login, password))
+        res.send(await new TodosService().GetUserTodos(login, token))
         return
     }catch{
         res.send(new ActionResultModel("400", "error while longing"));
@@ -22,5 +22,5 @@ router.post("/login", async (req, res) => {
 })
 
 export {
-    router as loginRouter
+    router as getTodoRouter
 }

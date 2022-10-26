@@ -9,7 +9,7 @@ router.post("/register", async (req, res) => {
         const {firstName, secondName, login, password} = req.body
 
         if(!firstName || !secondName || !login || !password){
-            res.send(new ActionResultModel("204", "dont have enough body parametrs for register new account"))
+            res.send(new ActionResultModel("204", "dont have enough body parameters for register new account"))
             return
         }
 

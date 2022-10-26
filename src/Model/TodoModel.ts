@@ -1,4 +1,5 @@
 import {Tag} from "./TagModel";
+import {Tags} from "../Database/Entity/Tags";
 
 export class TodoModel{
     public readonly todoId: number;
