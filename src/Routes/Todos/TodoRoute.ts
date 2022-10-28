@@ -16,7 +16,7 @@ router.post("/todo", async (req, res) => {
         res.send(await new TodosService().CreateTodo(login, token, todoTitle, todoDescription, tags))
         return
     }catch{
-        res.send(new ActionResultModel("400", "error while longing"));
+        res.send(new ActionResultModel("400", "error while searching todo"));
         return;
     }
 })

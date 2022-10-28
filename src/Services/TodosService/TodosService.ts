@@ -89,13 +89,57 @@ export class TodosService{
                 todoTitle: todoTitle,
                 todoDescription: todoDescription,
                 author: user,
-                createdDate: Date.now(),
+                createdDate: new Date(),
                 tags: _tags
             })
 
             await todo.save()
 
             return true
+        }catch{
+            return new ActionResultModel("400", "some error, sory:(")
+        }
+    }
+
+    public async GetTodosFromTag(login: string, token: string, tagId: number): Promise<Array<TodoModel> | ActionResultModel>{
+        try{
+            const arr = new Array<TodoModel>()
+
+            const user = await UserRepo.findOne({
+                where: {
+                    login: login
+                }
+            })
+
+            if(!user){
+                return new ActionResultModel("404", "user with this login dont found")
+            }
+
+            if(user.token !== token){
+                return new ActionResultModel("402", "token is invalid")
+            }
+
+            const tag = await this.tagService.GetTagById(tagId);
+
+            const todos = await TodoRepo.find({
+                // @ts-ignore
+                where:{
+                    author: user
+                },
+                relations: {
+                    tags: true
+                }
+            });
+
+            for (let i = 0; i < todos.length; i++) {
+                // @ts-ignore
+                if(todos[i].tags.includes(tag)){
+                    const t = new TodoModel(todos[i].id, todos[i].todoTitle, todos[i].todoDescription, todos[i].createdDate, await this.tagService.GetTagsByTodoId(todos[i].id))
+                    arr.push(t)
+                }
+            }
+
+            return arr
         }catch{
             return new ActionResultModel("400", "some error, sory:(")
         }
